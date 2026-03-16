@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City Public School — Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:    #C0392B;
+  --gold:   #D4A017;
+  --navy:   #1a2744;
+  --navy2:  #2e4080;
+  --light:  #f5f3ee;
+  --white:  #ffffff;
+  --gray:   #7a7a7a;
+  --green:  #16a085;
+  --topH:   64px;
+  --botH:   72px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--navy);min-height:100vh;display:flex;flex-direction:column;}
+
+/* ─── TOP BAR ─── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--topH);
+  background:var(--navy);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;z-index:300;
+  box-shadow:0 2px 16px rgba(0,0,0,.22);
+}
+.tl{display:flex;align-items:center;gap:10px;}
+.emblem{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:21px;flex-shrink:0;
+}
+.ttitle{display:flex;flex-direction:column;}
+.ttitle b{font-family:'Playfair Display',serif;font-size:15px;color:#fff;letter-spacing:.4px;}
+.ttitle small{font-size:10px;color:var(--gold);letter-spacing:1.1px;text-transform:uppercase;}
+.tr{display:flex;gap:10px;}
+.ib{background:none;border:none;cursor:pointer;color:#fff;font-size:20px;padding:6px;border-radius:8px;transition:background .2s;}
+.ib:hover{background:rgba(255,255,255,.13);}
+
+/* ─── CONTENT ─── */
+.content{margin-top:var(--topH);margin-bottom:var(--botH);flex:1;overflow-y:auto;}
+
+/* ─── HERO ─── */
+.hero{
+  background:linear-gradient(135deg,var(--navy) 55%,var(--navy2) 100%);
+  color:#fff;padding:28px 20px 24px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(212,160,23,.22) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.htag{display:inline-block;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;margin-bottom:9px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;line-height:1.2;margin-bottom:5px;}
+.hero p{font-size:13px;color:rgba(255,255,255,.72);margin-bottom:16px;}
+.hstats{display:flex;gap:22px;}
+.hs{text-align:center;}
+.hs-n{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold);}
+.hs-l{font-size:11px;color:rgba(255,255,255,.6);}
+
+/* ─── SECTION ─── */
+.sec{padding:18px 16px 8px;}
+.sec-t{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:13px;display:flex;align-items:center;gap:8px;}
+.sec-t::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--gold),transparent);border-radius:2px;}
+
+/* ─── QUICK CARDS ─── */
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:4px;}
+.qcard{background:var(--white);border-radius:14px;padding:16px 13px;box-shadow:0 2px 10px rgba(0,0,0,.07);cursor:pointer;transition:transform .17s,box-shadow .17s;display:flex;flex-direction:column;gap:7px;border-left:4px solid var(--gold);}
+.qcard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);}
+.qcard .qi{font-size:26px;}.qcard .ql{font-size:13px;font-weight:600;color:var(--navy);}
+.qcard.r{border-left-color:var(--red);}.qcard.n{border-left-color:var(--navy);}.qcard.t{border-left-color:var(--green);}
+
+/* ─── NOTICES ─── */
+.nlist{display:flex;flex-direction:column;gap:9px;}
+.ni{background:var(--white);border-radius:12px;padding:13px 15px;box-shadow:0 1px 6px rgba(0,0,0,.06);display:flex;gap:11px;align-items:flex-start;cursor:pointer;transition:box-shadow .2s;}
+.ni:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.nd{width:10px;height:10px;border-radius:50%;background:var(--red);margin-top:4px;flex-shrink:0;}
+.nd.g{background:var(--gold);}
+.nt{flex:1;}.nt strong{font-size:13px;font-weight:600;display:block;margin-bottom:2px;}.nt span{font-size:11px;color:var(--gray);}
+
+/* ─── HOME STRIP ─── */
+.hstrip{display:flex;gap:9px;overflow-x:auto;padding-bottom:6px;}
+.hstrip::-webkit-scrollbar{display:none;}
+.sthumb{min-width:108px;height:78px;border-radius:12px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:27px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:transform .2s;flex-shrink:0;overflow:hidden;position:relative;}
+.sthumb:hover{transform:scale(1.05);}
+.sthumb img,.sthumb video{width:100%;height:100%;object-fit:cover;}
+.sthumb .pb{position:absolute;background:rgba(0,0,0,.58);color:#fff;font-size:20px;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;}
+
+/* ─── GALLERY PAGE ─── */
+.gtoolbar{display:flex;gap:10px;padding:14px 16px 6px;flex-wrap:wrap;}
+.ubtn{
+  flex:1;min-width:128px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 14px;border-radius:14px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  transition:transform .14s,box-shadow .14s;
+  box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+.ubtn:active{transform:scale(.96);}
+.ubtn:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(0,0,0,.2);}
+.ubtn.img{background:var(--navy);color:#fff;}
+.ubtn.vid{background:var(--red);color:#fff;}
+.ubtn .ui{font-size:20px;}
+
+/* storage info bar */
+.sinfo{margin:0 16px 8px;background:var(--white);border-radius:12px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,.06);display:flex;align-items:center;gap:10px;font-size:12px;color:var(--gray);}
+.sinfo .si{font-size:18px;}
+.sinfo strong{color:var(--navy);}
+.sinfo .spill{flex:1;height:6px;background:#eee;border-radius:6px;overflow:hidden;}
+.sinfo .sfill{height:100%;background:linear-gradient(to right,var(--gold),var(--red));border-radius:6px;transition:width .4s;}
+
+/* filter tabs */
+.ftabs{display:flex;gap:8px;padding:4px 16px 10px;overflow-x:auto;}
+.ftabs::-webkit-scrollbar{display:none;}
+.ft{padding:7px 16px;border-radius:20px;border:2px solid #ddd;background:var(--white);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'DM Sans',sans-serif;color:var(--navy);}
+.ft.a{background:var(--navy);color:#fff;border-color:var(--navy);}
+.cnt{background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 7px;border-radius:12px;margin-left:5px;}
+
+/* gallery grid */
+.ggrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 16px 16px;}
+.gi{border-radius:14px;overflow:hidden;aspect-ratio:4/3;position:relative;background:#dde;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);transition:transform .2s;}
+.gi:hover{transform:scale(1.02);}
+.gi img,.gi video{width:100%;height:100%;object-fit:cover;display:block;}
+.gi .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.58) 0%,transparent 55%);display:flex;align-items:flex-end;justify-content:space-between;padding:8px 9px;opacity:0;transition:opacity .2s;}
+.gi:hover .ov{opacity:1;}
+.gi .gname{color:#fff;font-size:11px;font-weight:600;max-width:68%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gi .delbtn{background:var(--red);border:none;cursor:pointer;color:#fff;border-radius:8px;padding:5px 9px;font-size:14px;}
+.gi .vbadge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.62);color:#fff;font-size:16px;border-radius:8px;padding:3px 8px;}
+.gi .datebadge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;border-radius:6px;padding:2px 6px;}
+.empty{grid-column:1/-1;text-align:center;padding:52px 16px;color:var(--gray);}
+.empty .ei{font-size:58px;margin-bottom:13px;}
+.empty p{font-size:14px;line-height:1.7;}
+
+/* ─── BOTTOM BAR ─── */
+.botbar{position:fixed;bottom:0;left:0;right:0;height:var(--botH);background:var(--white);display:flex;align-items:stretch;border-top:1px solid #e5e0d8;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:300;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;position:relative;}
+.nb:hover{background:#f0ece4;}
+.nb.a{color:var(--red);}
+.nb .ni2{font-size:22px;}.nb .nl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:inherit;}
+.nb:not(.a) .nl{color:var(--gray);}
+.nb.a::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:3px;background:var(--red);border-radius:3px 3px 0 0;}
+
+/* ─── MODAL ─── */
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:400;align-items:center;justify-content:center;padding:20px;}
+.moverlay.o{display:flex;}
+.modal{background:var(--white);border-radius:20px;padding:26px 22px;width:100%;max-width:370px;box-shadow:0 20px 60px rgba(0,0,0,.22);animation:suUp .28s ease;}
+@keyframes suUp{from{transform:translateY(28px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal h2{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:11px;color:var(--navy);}
+.modal p{font-size:14px;color:var(--gray);line-height:1.6;margin-bottom:18px;}
+.mclose{width:100%;padding:13px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s;}
+.mclose:hover{background:var(--red);}
+
+/* ─── LIGHTBOX ─── */
+.lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:14px;gap:11px;}
+.lb.o{display:flex;}
+#lbWrap{max-width:100%;max-height:60vh;display:flex;align-items:center;justify-content:center;}
+#lbWrap img{max-width:100%;max-height:60vh;border-radius:12px;object-fit:contain;}
+#lbWrap video{max-width:100%;max-height:60vh;border-radius:12px;}
+.lbcap{color:rgba(255,255,255,.62);font-size:12px;text-align:center;}
+.lbnav{display:flex;gap:8px;align-items:center;}
+.lbact{display:flex;gap:8px;}
+.lb-btn{padding:10px 18px;border-radius:12px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;transition:opacity .2s;}
+.lb-btn:hover{opacity:.82;}
+.lb-btn.cls{background:#fff;color:var(--navy);}
+.lb-btn.del{background:var(--red);color:#fff;}
+.lb-btn.dl{background:rgba(255,255,255,.14);color:#fff;}
+.lb-btn.nav{background:rgba(255,255,255,.12);color:#fff;font-size:22px;padding:8px 15px;}
+
+/* ─── PAGES ─── */
+.page{display:none;}.page.a{display:block;}
+
+/* ─── ABOUT / CONTACT ─── */
+.abox{margin:0 16px 13px;background:var(--white);border-radius:14px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.abox h3{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:9px;color:var(--navy);}
+.abox p{font-size:13px;color:var(--gray);line-height:1.7;}
+.tagr{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
+.tag{background:#f0ece4;color:var(--navy);font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;}
+.ccard{background:var(--white);border-radius:14px;padding:18px;margin:0 16px 13px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.ccard h3{font-family:'Playfair Display',serif;font-size:15px;color:var(--navy);margin-bottom:9px;}
+.cr{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid #f0ece4;}
+.cr:last-child{border-bottom:none;}
+.cr .ci{font-size:19px;width:34px;text-align:center;}
+.cr .ct{font-size:13px;}.cr .ct strong{display:block;font-weight:600;}.cr .ct span{color:var(--gray);font-size:12px;}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s,transform .3s;z-index:600;white-space:nowrap;box-shadow:0 4px 18px rgba(0,0,0,.25);}
+.toast.s{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ─── LOADING ─── */
+.ldg{position:fixed;inset:0;background:rgba(0,0,0,.46);display:none;align-items:center;justify-content:center;z-index:700;flex-direction:column;gap:14px;}
+.ldg.s{display:flex;}
+.spin{width:52px;height:52px;border:5px solid rgba(255,255,255,.28);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.ldg p{color:#fff;font-size:14px;font-weight:600;}
+
+/* save indicator */
+.save-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#4caf50;margin-left:8px;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+input[type=file]{display:none;}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="tl">
+    <div class="emblem">🏫</div>
+    <div class="ttitle">
+      <b>City Public School</b>
+      <small>Since 1993 · Old Guntur</small>
+    </div>
+  </div>
+  <div class="tr">
+    <button class="ib" onclick="openM('mNotif')" title="Notifications">🔔</button>
+    <button class="ib" onclick="openM('mSearch')" title="Search">🔍</button>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<main class="content">
+
+  <!-- ══ HOME ══ -->
+  <div class="page a" id="pg-home">
+    <div class="hero">
+      <div class="htag">The School for Right Education</div>
+      <h1>Welcome to City Public School</h1>
+      <p>Nursery to Class X · English Medium · Recognised by Govt. A.P.</p>
+      <div class="hstats">
+        <div class="hs"><div class="hs-n">30+</div><div class="hs-l">Years</div></div>
+        <div class="hs"><div class="hs-n">4</div><div class="hs-l">Branches</div></div>
+        <div class="hs"><div class="hs-n" id="homeMediaCount">0</div><div class="hs-l">Media Saved</div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t">Quick Access</div>
+      <div class="qgrid">
+        <div class="qcard" onclick="openM('mAdmit')"><div class="qi">📋</div><div class="ql">Admissions</div></div>
+        <div class="qcard r" onclick="openM('mFees')"><div class="qi">💰</div><div class="ql">Fee Details</div></div>
+        <div class="qcard n" onclick="openM('mResults')"><div class="qi">📊</div><div class="ql">Results</div></div>
+        <div class="qcard t" onclick="openM('mTT')"><div class="qi">📅</div><div class="ql">Timetable</div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t">Notice Board</div>
+      <div class="nlist">
+        <div class="ni"><div class="nd"></div><div class="nt"><strong>Annual Day Celebrations 2025</strong><span>Grand celebration at main campus — Feb 28, 2025</span></div></div>
+        <div class="ni"><div class="nd g"></div><div class="nt"><strong>Admission Open for 2025–26</strong><span>Nursery to Class X · Contact office for details</span></div></div>
+        <div class="ni"><div class="nd"></div><div class="nt"><strong>Holiday Notice</strong><span>School closed on March 3rd — Maha Shivaratri</span></div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t">Gallery Preview <span id="homeStripSaved" style="font-size:12px;font-weight:400;color:var(--gray);font-family:'DM Sans',sans-serif;"></span></div>
+      <div class="hstrip" id="homeStrip">
+        <div class="sthumb" style="background:linear-gradient(135deg,#1a2744,#2e4080)" onclick="switchPage('gallery')">🖼️</div>
+        <div class="sthumb" style="background:linear-gradient(135deg,#C0392B,#e74c3c)" onclick="switchPage('gallery')">📸</div>
+        <div class="sthumb" style="background:linear-gradient(135deg,#b8860b,#D4A017)" onclick="switchPage('gallery')">🏆</div>
+        <div class="sthumb" style="background:linear-gradient(135deg,#16a085,#1abc9c)" onclick="switchPage('gallery')">🎨</div>
+        <div class="sthumb" style="background:linear-gradient(135deg,#6c3483,#9b59b6);font-size:12px;font-weight:700;color:#fff" onclick="switchPage('gallery')">View All →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GALLERY ══ -->
+  <div class="page" id="pg-gallery">
+    <div class="hero" style="padding-bottom:18px">
+      <div class="htag">📦 Permanently Saved</div>
+      <h1>Photo &amp; Video Gallery</h1>
+      <p>All uploads saved permanently on this device<span class="save-dot"></span></p>
+    </div>
+
+    <!-- Upload Buttons -->
+    <div class="gtoolbar">
+      <button class="ubtn img" onclick="document.getElementById('imgIn').click()">
+        <span class="ui">📷</span> Upload Photos
+      </button>
+      <button class="ubtn vid" onclick="document.getElementById('vidIn').click()">
+        <span class="ui">🎬</span> Upload Videos
+      </button>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="imgIn" accept="image/*" multiple onchange="uploadFiles(event,'image')">
+    <input type="file" id="vidIn" accept="video/*" multiple onchange="uploadFiles(event,'video')">
+
+    <!-- Storage Info -->
+    <div class="sinfo" id="storageInfo">
+      <span class="si">💾</span>
+      <div style="flex:1">
+        <div><strong id="sCount">0 items</strong> saved permanently on this device</div>
+        <div style="margin-top:4px;display:flex;align-items:center;gap:8px;">
+          <div class="spill"><div class="sfill" id="sFill" style="width:0%"></div></div>
+          <span id="sSize">0 MB</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="ftabs">
+      <button class="ft a" onclick="setFilter('all',this)">All <span class="cnt" id="cAll">0</span></button>
+      <button class="ft" onclick="setFilter('image',this)">📷 Photos <span class="cnt" id="cImg">0</span></button>
+      <button class="ft" onclick="setFilter('video',this)">🎬 Videos <span class="cnt" id="cVid">0</span></button>
+    </div>
+
+    <!-- Grid -->
+    <div class="ggrid" id="gGrid">
+      <div class="empty" id="emptyMsg">
+        <div class="ei">🖼️</div>
+        <p>No media saved yet.<br>Tap <strong>Upload Photos</strong> or <strong>Upload Videos</strong><br>— they'll be saved <strong>permanently</strong>!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ABOUT ══ -->
+  <div class="page" id="pg-about">
+    <div class="hero"><div class="htag">About Us</div><h1>Our Story</h1><p>Building futures since 1993 in Guntur, Andhra Pradesh</p></div>
+    <div class="sec"><div class="sec-t">Who We Are</div></div>
+    <div class="abox"><h3>Our Mission</h3><p>City Public School is dedicated to providing quality English medium education from Nursery to Class X. Recognised by the Government of Andhra Pradesh, we nurture every child with the right values, knowledge, and skills for life.</p><div class="tagr"><span class="tag">English Medium</span><span class="tag">Govt. Recognised</span><span class="tag">Since 1993</span></div></div>
+    <div class="abox"><h3>Our Branches</h3><p>We operate across 4 locations in Guntur to serve more families:</p><div class="tagr"><span class="tag">📍 Bodrai Centre (Main)</span><span class="tag">📍 Suddapalli Donka</span><span class="tag">📍 3/6 Balaji Nagar</span><span class="tag">📍 Yadava E.M. School</span></div></div>
+    <div class="abox"><h3>Director</h3><p><strong>J. Sreenivasa Rao (Hony. Sc.)</strong> leads our institution with a vision of holistic education and community excellence.</p></div>
+  </div>
+
+  <!-- ══ CONTACT ══ -->
+  <div class="page" id="pg-contact">
+    <div class="hero"><div class="htag">Get in Touch</div><h1>Contact Us</h1><p>We're happy to answer your questions</p></div>
+    <div class="sec"><div class="sec-t">Reach Us</div></div>
+    <div class="ccard">
+      <h3>Main Campus — Bodrai Centre</h3>
+      <div class="cr"><div class="ci">📞</div><div class="ct"><strong>0863-2211273</strong><span>Landline</span></div></div>
+      <div class="cr"><div class="ci">📱</div><div class="ct"><strong>93473 07672</strong><span>Mobile</span></div></div>
+      <div class="cr"><div class="ci">📍</div><div class="ct"><strong>Near Andhra Bank, Bodrai Centre</strong><span>Old Guntur, Guntur, A.P.</span></div></div>
+    </div>
+    <div class="ccard">
+      <h3>Branch Contacts</h3>
+      <div class="cr"><div class="ci">🏫</div><div class="ct"><strong>Suddapalli Donka</strong><span>Main Road, Old Guntur</span></div></div>
+      <div class="cr"><div class="ci">🏫</div><div class="ct"><strong>3/6 Balaji Nagar</strong><span>2nd Quarter, Guntur</span></div></div>
+      <div class="cr"><div class="ci">🏫</div><div class="ct"><strong>Yadava E.M. School</strong><span>Old Guntur, Guntur</span></div></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- BOTTOM BAR -->
+<nav class="botbar">
+  <button class="nb a" id="bn-home" onclick="switchPage('home')"><span class="ni2">🏠</span><span class="nl">Home</span></button>
+  <button class="nb" id="bn-gallery" onclick="switchPage('gallery')"><span class="ni2">🖼️</span><span class="nl">Gallery</span></button>
+  <button class="nb" id="bn-about" onclick="switchPage('about')"><span class="ni2">📖</span><span class="nl">About</span></button>
+  <button class="nb" id="bn-contact" onclick="switchPage('contact')"><span class="ni2">📞</span><span class="nl">Contact</span></button>
+</nav>
+
+<!-- MODALS -->
+<div class="moverlay" id="mAdmit"><div class="modal"><h2>📋 Admissions 2025–26</h2><p>Admissions are open for Nursery to Class X. Visit our main campus near Andhra Bank, Bodrai Centre, or call <strong>93473 07672</strong> to know more.</p><button class="mclose" onclick="closeM('mAdmit')">Close</button></div></div>
+<div class="moverlay" id="mFees"><div class="modal"><h2>💰 Fee Details</h2><p>Fee structure varies by class and is affordable for all families. Contact the school office for the detailed fee schedule. Special concessions may be available.</p><button class="mclose" onclick="closeM('mFees')">Close</button></div></div>
+<div class="moverlay" id="mResults"><div class="modal"><h2>📊 Academic Results</h2><p>Our students consistently achieve excellent board exam results. Contact the office with your child's roll number for individual result queries.</p><button class="mclose" onclick="closeM('mResults')">Close</button></div></div>
+<div class="moverlay" id="mTT"><div class="modal"><h2>📅 School Timetable</h2><p><strong>Timings:</strong> Monday – Saturday, 8:30 AM – 4:00 PM<br><br>Collect the subject-wise timetable from your class teacher. Copies shared via parent WhatsApp groups.</p><button class="mclose" onclick="closeM('mTT')">Close</button></div></div>
+<div class="moverlay" id="mNotif"><div class="modal"><h2>🔔 Notifications</h2><p>• Annual Day Celebrations — Feb 28<br><br>• Admissions Open for 2025–26<br><br>• Holiday: Maha Shivaratri — March 3rd<br><br>• PTM — March 15th, 10 AM</p><button class="mclose" onclick="closeM('mNotif')">Close</button></div></div>
+<div class="moverlay" id="mSearch"><div class="modal"><h2>🔍 Search</h2><p>Use the bottom navigation to explore Gallery, About Us, and Contact info. For specific queries call <strong>93473 07672</strong>.</p><button class="mclose" onclick="closeM('mSearch')">Close</button></div></div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb">
+  <div id="lbWrap"></div>
+  <div class="lbcap" id="lbCap"></div>
+  <div class="lbnav">
+    <button class="lb-btn nav" onclick="lbGo(-1)">‹</button>
+    <button class="lb-btn cls" onclick="closeLB()">✕ Close</button>
+    <button class="lb-btn nav" onclick="lbGo(1)">›</button>
+  </div>
+  <div class="lbact">
+    <button class="lb-btn del" onclick="lbDelete()">🗑 Delete</button>
+    <button class="lb-btn dl" onclick="lbDownload()">⬇ Download</button>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="ldg" id="ldg">
+  <div class="spin"></div>
+  <p id="ldgMsg">Saving to device…</p>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  IndexedDB — Permanent Storage Engine
+// ══════════════════════════════════════════════
+const DB_NAME = 'CityPublicSchoolGallery';
+const DB_VER  = 1;
+const STORE   = 'media';
+let db = null;
+
+function openDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE)) {
+        const s = d.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
+        s.createIndex('type', 'type', { unique: false });
+        s.createIndex('date', 'date', { unique: false });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; res(db); };
+    req.onerror   = e => rej(e.target.error);
+  });
+}
+
+function dbAdd(record) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    const req = tx.objectStore(STORE).add(record);
+    req.onsuccess = e => res(e.target.result);
+    req.onerror   = e => rej(e.target.error);
+  });
+}
+
+function dbGetAll() {
+  return new Promise((res, rej) => {
+    const tx  = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).getAll();
+    req.onsuccess = e => res(e.target.result.reverse()); // newest first
+    req.onerror   = e => rej(e.target.error);
+  });
+}
+
+function dbDelete(id) {
+  return new Promise((res, rej) => {
+    const tx  = db.transaction(STORE, 'readwrite');
+    const req = tx.objectStore(STORE).delete(id);
+    req.onsuccess = () => res();
+    req.onerror   = e => rej(e.target.error);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  App State
+// ══════════════════════════════════════════════
+let allItems    = [];   // all from DB
+let filtered    = [];   // current filter view
+let curFilter   = 'all';
+let lbIdx       = 0;
+let totalBytes  = 0;
+
+// ══════════════════════════════════════════════
+//  Startup
+// ══════════════════════════════════════════════
+async function init() {
+  try {
+    await openDB();
+    allItems = await dbGetAll();
+    calcSize();
+    renderGallery();
+    updateHomeStrip();
+    updateCounts();
+    updateStorageBar();
+  } catch(e) {
+    console.error('DB init error', e);
+    toast('⚠️ Storage unavailable — items won\'t persist');
+  }
+}
+init();
+
+// ══════════════════════════════════════════════
+//  File Upload — saves blob directly to IndexedDB
+// ══════════════════════════════════════════════
+async function uploadFiles(e, type) {
+  const files = [...e.target.files];
+  e.target.value = '';
+  if (!files.length) return;
+
+  showLoad(true, `Saving ${files.length} ${type}(s) permanently…`);
+
+  let saved = 0;
+  for (const file of files) {
+    try {
+      // Read file as ArrayBuffer for efficient DB storage
+      const buf  = await file.arrayBuffer();
+      const blob = new Blob([buf], { type: file.type });
+      const url  = URL.createObjectURL(blob);
+
+      const record = {
+        name:     file.name,
+        type:     type,
+        mime:     file.type,
+        size:     file.size,
+        date:     new Date().toLocaleDateString('en-IN'),
+        ts:       Date.now(),
+        data:     buf,          // raw bytes — persisted in IndexedDB
+      };
+
+      const id = await dbAdd(record);
+      // After saving, create object URL for display
+      allItems.unshift({ ...record, id, objectUrl: url });
+      totalBytes += file.size;
+      saved++;
+    } catch(err) {
+      console.error('Save failed for', file.name, err);
+    }
+  }
+
+  showLoad(false);
+  renderGallery();
+  updateHomeStrip();
+  updateCounts();
+  updateStorageBar();
+
+  if (saved === files.length) {
+    toast(`✅ ${saved} ${type}(s) saved permanently!`);
+  } else {
+    toast(`⚠️ ${saved}/${files.length} saved (some files may be too large)`);
+  }
+}
+
+// ══════════════════════════════════════════════
+//  Reload object URLs from stored ArrayBuffers
+//  (needed when page refreshes — object URLs are lost)
+// ══════════════════════════════════════════════
+async function reloadFromDB() {
+  await openDB();
+  const raw = await dbGetAll();
+  allItems = raw.map(r => {
+    const blob = new Blob([r.data], { type: r.mime });
+    return { ...r, objectUrl: URL.createObjectURL(blob) };
+  });
+}
+
+// Override init to reload properly
+async function init() {
+  try {
+    await openDB();
+    const raw = await dbGetAll();
+    allItems = raw.map(r => {
+      const blob = new Blob([r.data], { type: r.mime });
+      return { ...r, objectUrl: URL.createObjectURL(blob) };
+    });
+    calcSize();
+    renderGallery();
+    updateHomeStrip();
+    updateCounts();
+    updateStorageBar();
+  } catch(e) {
+    console.error('DB init error', e);
+    toast('⚠️ Storage error — using session-only mode');
+  }
+}
+
+// ══════════════════════════════════════════════
+//  Size calculation
+// ══════════════════════════════════════════════
+function calcSize() {
+  totalBytes = allItems.reduce((s, i) => s + (i.size || 0), 0);
+}
+
+function fmtSize(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+  return (b/(1024*1024)).toFixed(1) + ' MB';
+}
+
+// ══════════════════════════════════════════════
+//  UI Updates
+// ══════════════════════════════════════════════
+function updateCounts() {
+  const imgs = allItems.filter(x => x.type === 'image').length;
+  const vids = allItems.filter(x => x.type === 'video').length;
+  document.getElementById('cAll').textContent  = allItems.length;
+  document.getElementById('cImg').textContent  = imgs;
+  document.getElementById('cVid').textContent  = vids;
+  document.getElementById('sCount').textContent = `${allItems.length} item${allItems.length !== 1 ? 's' : ''}`;
+  document.getElementById('homeMediaCount').textContent = allItems.length;
+  const hs = document.getElementById('homeStripSaved');
+  if (hs) hs.textContent = allItems.length > 0 ? `(${allItems.length} saved)` : '';
+}
+
+function updateStorageBar() {
+  const maxEstimate = 500 * 1024 * 1024; // show bar relative to 500MB
+  const pct = Math.min((totalBytes / maxEstimate) * 100, 100);
+  document.getElementById('sFill').style.width = pct + '%';
+  document.getElementById('sSize').textContent = fmtSize(totalBytes);
+}
+
+// ══════════════════════════════════════════════
+//  Filter
+// ══════════════════════════════════════════════
+function setFilter(f, btn) {
+  curFilter = f;
+  document.querySelectorAll('.ft').forEach(t => t.classList.remove('a'));
+  btn.classList.add('a');
+  renderGallery();
+}
+
+// ══════════════════════════════════════════════
+//  Render Gallery Grid
+// ══════════════════════════════════════════════
+function renderGallery() {
+  filtered = curFilter === 'all' ? [...allItems] : allItems.filter(x => x.type === curFilter);
+  const grid = document.getElementById('gGrid');
+
+  if (filtered.length === 0) {
+    const label = curFilter === 'video' ? 'videos' : curFilter === 'image' ? 'photos' : 'media';
+    grid.innerHTML = `<div class="empty">
+      <div class="ei">${curFilter === 'video' ? '🎬' : '🖼️'}</div>
+      <p>No ${label} saved yet.<br>Tap the upload button to add content!<br><em style="font-size:11px;color:#bbb;">Files are saved permanently on this device.</em></p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((item, i) => {
+    const isV = item.type === 'video';
+    const mediaEl = isV
+      ? `<video src="${item.objectUrl}" preload="metadata" playsinline></video>`
+      : `<img src="${item.objectUrl}" alt="${esc(item.name)}" loading="lazy">`;
+    return `<div class="gi" onclick="openLB(${i})">
+      ${mediaEl}
+      ${isV ? `<div class="vbadge">▶</div>` : ''}
+      <div class="datebadge">${item.date}</div>
+      <div class="ov">
+        <span class="gname">${esc(item.name)}</span>
+        <button class="delbtn" onclick="event.stopPropagation();delItem(${item.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+//  Delete
+// ══════════════════════════════════════════════
+async function delItem(id) {
+  if (!confirm('Permanently delete this item from the gallery?')) return;
+  try {
+    await dbDelete(id);
+    const idx = allItems.findIndex(x => x.id === id);
+    if (idx !== -1) {
+      URL.revokeObjectURL(allItems[idx].objectUrl);
+      totalBytes -= (allItems[idx].size || 0);
+      allItems.splice(idx, 1);
+    }
+    renderGallery();
+    updateHomeStrip();
+    updateCounts();
+    updateStorageBar();
+    toast('🗑 Deleted permanently!');
+  } catch(e) {
+    toast('❌ Delete failed');
+  }
+}
+
+// ══════════════════════════════════════════════
+//  Lightbox
+// ══════════════════════════════════════════════
+function openLB(i) {
+  lbIdx = i;
+  renderLB();
+  document.getElementById('lb').classList.add('o');
+}
+
+function closeLB() {
+  document.getElementById('lb').classList.remove('o');
+  document.querySelectorAll('#lbWrap video').forEach(v => v.pause());
+}
+
+function renderLB() {
+  const item = filtered[lbIdx];
+  if (!item) return;
+  const wrap = document.getElementById('lbWrap');
+  if (item.type === 'video') {
+    wrap.innerHTML = `<video src="${item.objectUrl}" controls autoplay playsinline style="max-width:100%;max-height:60vh;border-radius:12px;"></video>`;
+  } else {
+    wrap.innerHTML = `<img src="${item.objectUrl}" alt="${esc(item.name)}" style="max-width:100%;max-height:60vh;border-radius:12px;object-fit:contain;">`;
+  }
+  document.getElementById('lbCap').textContent =
+    `${item.name} · ${item.date} · ${fmtSize(item.size)} · ${lbIdx+1} / ${filtered.length}`;
+}
+
+function lbGo(d) {
+  document.querySelectorAll('#lbWrap video').forEach(v => v.pause());
+  lbIdx = (lbIdx + d + filtered.length) % filtered.length;
+  renderLB();
+}
+
+async function lbDelete() {
+  const item = filtered[lbIdx];
+  if (!item || !confirm('Permanently delete this item?')) return;
+  await dbDelete(item.id);
+  const ai = allItems.findIndex(x => x.id === item.id);
+  if (ai !== -1) { URL.revokeObjectURL(allItems[ai].objectUrl); totalBytes -= (allItems[ai].size || 0); allItems.splice(ai, 1); }
+  renderGallery();
+  updateHomeStrip();
+  updateCounts();
+  updateStorageBar();
+  filtered = curFilter === 'all' ? [...allItems] : allItems.filter(x => x.type === curFilter);
+  if (filtered.length === 0) { closeLB(); toast('🗑 Deleted!'); return; }
+  lbIdx = Math.min(lbIdx, filtered.length - 1);
+  renderLB();
+  toast('🗑 Deleted permanently!');
+}
+
+function lbDownload() {
+  const item = filtered[lbIdx];
+  if (!item) return;
+  const a = document.createElement('a');
+  a.href = item.objectUrl; a.download = item.name; a.click();
+  toast('⬇ Downloading…');
+}
+
+document.getElementById('lb').addEventListener('click', e => { if (e.target === document.getElementById('lb')) closeLB(); });
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lb').classList.contains('o')) return;
+  if (e.key === 'ArrowLeft')  lbGo(-1);
+  else if (e.key === 'ArrowRight') lbGo(1);
+  else if (e.key === 'Escape') closeLB();
+});
+
+// ══════════════════════════════════════════════
+//  Home Strip
+// ══════════════════════════════════════════════
+function updateHomeStrip() {
+  const strip = document.getElementById('homeStrip');
+  if (allItems.length === 0) {
+    strip.innerHTML = `
+      <div class="sthumb" style="background:linear-gradient(135deg,#1a2744,#2e4080)" onclick="switchPage('gallery')">🖼️</div>
+      <div class="sthumb" style="background:linear-gradient(135deg,#C0392B,#e74c3c)" onclick="switchPage('gallery')">📸</div>
+      <div class="sthumb" style="background:linear-gradient(135deg,#b8860b,#D4A017)" onclick="switchPage('gallery')">🏆</div>
+      <div class="sthumb" style="background:linear-gradient(135deg,#16a085,#1abc9c)" onclick="switchPage('gallery')">🎨</div>
+      <div class="sthumb" style="background:linear-gradient(135deg,#6c3483,#9b59b6);font-size:12px;font-weight:700;color:#fff" onclick="switchPage('gallery')">View All →</div>`;
+    return;
+  }
+  const preview = allItems.slice(0, 5);
+  strip.innerHTML = preview.map(item => {
+    if (item.type === 'image') {
+      return `<div class="sthumb" onclick="switchPage('gallery')"><img src="${item.objectUrl}" alt=""></div>`;
+    } else {
+      return `<div class="sthumb" onclick="switchPage('gallery')"><video src="${item.objectUrl}" preload="metadata"></video><div class="pb">▶</div></div>`;
+    }
+  }).join('') + `<div class="sthumb" style="background:linear-gradient(135deg,#6c3483,#9b59b6);font-size:12px;font-weight:700;color:#fff" onclick="switchPage('gallery')">View All →</div>`;
+}
+
+// ══════════════════════════════════════════════
+//  Page navigation
+// ══════════════════════════════════════════════
+function switchPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('a'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('a'));
+  document.getElementById('pg-' + name).classList.add('a');
+  const bn = document.getElementById('bn-' + name);
+  if (bn) bn.classList.add('a');
+  window.scrollTo(0, 0);
+  if (name === 'gallery') { renderGallery(); updateCounts(); }
+}
+
+// ══════════════════════════════════════════════
+//  Modals
+// ══════════════════════════════════════════════
+function openM(id)  { document.getElementById(id).classList.add('o'); }
+function closeM(id) { document.getElementById(id).classList.remove('o'); }
+document.querySelectorAll('.moverlay').forEach(o => o.addEventListener('click', e => { if (e.target===o) o.classList.remove('o'); }));
+
+// ══════════════════════════════════════════════
+//  Utilities
+// ══════════════════════════════════════════════
+function showLoad(v, msg) {
+  document.getElementById('ldg').classList.toggle('s', v);
+  if (msg) document.getElementById('ldgMsg').textContent = msg;
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('s');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('s'), 2800);
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>
